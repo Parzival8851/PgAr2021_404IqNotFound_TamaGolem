@@ -1,11 +1,8 @@
-import java.util.Collection;
-import java.util.Queue;
-import java.util.Iterator;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Tamagolem
 {
-    private Queue<Pietra> pietre;
+    private Deque<Pietra> pietre;
     private int vita;
 
     /**
@@ -17,25 +14,40 @@ public class Tamagolem
             return false;
         return true;
     }
+    public static int estraiIntero(int min, int max) {
+        int range = max + 1 - min;
+        //int casual = rand.nextInt(range);
+        //return casual + min;
+        return 0;
+    }
 
-    Tamagolem(){//costruttore
-        pietre = new Queue<Pietra>();
-        vita = Main.VITA_TAMAGOLEM;
+    public Tamagolem(){//costruttore
+        pietre = new ArrayDeque<Pietra>();
+        //vita = Main.VITA_TAMAGOLEM;
 
     }
 
-    private void sceltaPietre(ArrayList<Pietra> sassi){//aggiungo le pietre scelte a una queue di pietre
-        for (ArrayList<Pietra> x: sassi) {
-            pietre.add(x);
+    private void sceltaPietre(Deque<Pietra> sassi){//aggiungo le pietre scelte a una queue di pietre
+        for (Pietra x: sassi) {
+            pietre.addFirst(x);
         }
     }
 
-    public int getVita{
+    public int getVita(){
         return vita;
     }
 
+
+    /**
+     * Viene selezionata la prima pietra inserita nella deque e poi viene spostata in
+     * ultima posizione nel caso il tamagolem dovesse rimanere in vita
+     * @return la pietra lanciata
+     */
     private Pietra scagliaPietre(){
-        //da pensare beneeeeeee
+       Pietra attuale = pietre.getFirst();//salco in una variabile temporanea la pietra da ritornare
+       pietre.addLast(pietre.getFirst());//sposto la pietra in fondo
+       pietre.removeFirst();//la rimuovo dalla posizione iniziale
+       return attuale;
     }
 
     public void getDanno(int danno){
