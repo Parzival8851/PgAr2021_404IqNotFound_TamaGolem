@@ -39,9 +39,9 @@ public class Equilibrio
 
 
         // righe
-        for (int riga = 0; riga < N; riga++) // calcolo i valori per ogni riga
+        for (int riga = 0; riga < N-1; riga++) // calcolo i valori per ogni riga tranne l'ultima che si autocompleta
         {
-            aggiornaSomma(riga, N);
+            somma = aggiornaSomma(riga, N);
 
             // celle
             for (int colonna = riga+1; colonna < N; colonna++) // calcolo i valori di ogni cella da sinistra a partire dal primo posto dopo la diagonale
@@ -63,39 +63,138 @@ public class Equilibrio
 
                     }
                     else if(colonna==(N-1)) // penultima cella  */
-                    if(colonna<(N-1))
+                    if(riga==(N-3) && colonna==(N-2))
                     {
-                        /*if (Math.abs(somma)>V)
+                        // è l'ultimo valore che calcolo, gli altri due sono sono -somma,
+                        // ma non può essere totalmente casuale altrimenti può generare collisioni:
+                        // perché la somma della penultima riga potrebbe essere potenzialmente >V
+                        // risolvo con un'intersezione tra i valori random possibili come se dovessi calcolare sia questa cella
+                        // che la sua simmetrica
+
+                        // cella iniziale
+                        ArrayList<Integer> temp1 = new ArrayList<Integer>(); // arraylist temporaneo dei valori da cui posso estrarre
+
+                        temp1.add(somma);
+                        for (int i = 1; i < Math.abs(somma); i++)
                         {
-                            matrice[riga][colonna]=estraiIntero(Math.abs(somma-V), V-1);
-                            if (somma<0) matrice[riga][colonna]=-matrice[riga][colonna]; // ho superato la V quindi creo un random controllato per non sforare sup(W)=V
+                            if (somma>0) temp1.add(-i);
+                            else temp1.add(i);
                         }
 
+
+                        // possibili valori da estrarre negativi: da -1 a -(somma-1)
+                        // in modo da non fare 0 la somma aggiornata
+
+                        for (int i = Math.abs(somma)+1; i <= V; i++)
+                        {
+                            if (somma<0) temp1.add(Math.abs(somma)-i);
+                            else temp1.add(i-Math.abs(somma));
+
+                        }
+
+                        //aggiorno la somma alla riga N-2
+                        int sum = aggiornaSomma(riga+1, N);
+
+                        // cella simmetrica
+                        ArrayList<Integer> temp2 = new ArrayList<Integer>(); // arraylist temporaneo dei valori da cui posso estrarre
+
+                        temp2.add(sum);
+                        for (int i = 1; i < Math.abs(sum); i++)
+                        {
+                            if (sum>0) temp2.add(-i);
+                            else temp2.add(i);
+                        }
+
+
+                        // possibili valori da estrarre negativi: da -1 a -(somma-1)
+                        // in modo da non fare 0 la somma aggiornata
+
+                        for (int i = Math.abs(sum)+1; i <= V; i++)
+                        {
+                            if (sum<0) temp2.add(Math.abs(sum)-i);
+                            else temp2.add(i-Math.abs(sum));
+
+                        }
+
+                        // intersezione tra valori possibili tra le due righe
+                        temp1.retainAll(temp2);
+
+                        // per mantenere la simmetria della tabella prendo solo i valori assoluti che si ripetono
+                        temp2.clear(); //svuoto temp2 per poterlo riutilizzare
+                        for (Integer elemento : temp1) // ciclo tutti gli elementi di intersezione
+                        {
+                            for (Integer elem : temp1) // se esiste l'elemento opposto lo carico in temp2
+                            {
+                                if (elemento==-elem)
+                                    temp2.add(elemento);
+                            }
+
+
+
+                        } // in temp2 ci saranno solo i valori simmetrici come +/- 1 in modo da continuare a garantire la casualità
+
+                        for (Integer elemento : temp2)
+                            System.out.print(elemento + " | ");
+
+
+                        System.out.println();
+                        System.out.println();
+                        System.out.println();
+
+                        if (temp2.isEmpty()) // nel caso non ci siano intersezioni opposte rompo la simmetria
+                        {
+                            System.out.println("temp2 vuoto");
+                            Collections.shuffle(temp1); // shuffle della lista da cui prendere i valori
+                            matrice[riga][colonna]=temp1.get(0);
+                            matrice[colonna][riga]=temp1.get(0);
+                        }
                         else
-                        {*/
+                        {
+                            Collections.shuffle(temp2); // shuffle della lista da cui prendere i valori
+                            matrice[riga][colonna]=temp2.get(0); // prendo un elemento a caso tra i possibili e lo inserisco nell'iniziale
+                            matrice[colonna][riga]=-matrice[riga][colonna]; // setto la simmetrica
+                        }
+
+
+                    }
+                    else if(colonna<(N-1))
+                    {
+
                             ArrayList<Integer> temp = new ArrayList<Integer>(); // arraylist temporaneo dei valori da cui posso estrarre
 
+                        temp.add(somma); // mi interessa che non ci sia l'opposto, ma somma posso usarlo
                             for (int i = 1; i < Math.abs(somma); i++)
-                                temp.add(-i);
+                            {
+                                if (somma>0) temp.add(-i);
+                                else temp.add(i);
+                            }
+
+
                             // possibili valori da estrarre negativi: da -1 a -(somma-1)
                             // in modo da non fare 0 la somma aggiornata
 
-                            for (int i = Math.abs(somma+1); i <= V; i++)
-                                temp.add(i-somma);
+                            for (int i = Math.abs(somma)+1; i <= V; i++)
+                            {
+                                if (somma<0) temp.add(Math.abs(somma)-i);
+                                else temp.add(i-Math.abs(somma));
+
+                            }
+
                             // possibili valori da estrarre positivi: da somma+1-somma a V-somma
                             // in modo da non fare 0 la somma aggiornata
 
                             Collections.shuffle(temp); // shuffle della lista da cui prendere i valori
                             matrice[riga][colonna]=temp.get(0); // prendo un elemento a caso tra i possibili
-                       // }
+
 
 
 
                     }
-                    else matrice[riga][colonna]=-somma; // l'ultimo elemento è l'opposto della somma della riga per raggiungere l'equilibrio
+                    else if (colonna==(N-1)) matrice[riga][colonna]=-somma; // l'ultimo elemento è l'opposto della somma della riga per raggiungere l'equilibrio
+                    // ultima colonna
                 }
 
-                matrice[colonna][riga]=-matrice[riga][colonna]; // matrice simmetrica
+                if(!(riga==(N-3) && colonna==(N-2)))      matrice[colonna][riga]=-matrice[riga][colonna]; // matrice simmetrica
                 somma+=matrice[riga][colonna]; // aggiorno la somma con l'elemento appena inserito
             }
 
@@ -133,11 +232,13 @@ public class Equilibrio
      * @param riga
      * @param N
      */
-    static private void aggiornaSomma(int riga, int N)
+    static private int aggiornaSomma(int riga, int N)
     {
-        somma=0;
+        int sum=0;
         for (int i = 0; i < riga; i++) // tengo conto dei valori già calcolati fino alla diagonale esclusa perché 0
-            somma+=matrice[riga][i];
+            sum+=matrice[riga][i];
+
+        return sum;
     }
 
 
