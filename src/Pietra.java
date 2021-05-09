@@ -1,6 +1,8 @@
 
 //import it.unibs.fp.mylib.EstrazioniCasuali;
 
+import it.unibs.fp.mylib.EstrazioniCasuali;
+
 public class Pietra {
 
     private Elementi tipo;
@@ -12,14 +14,13 @@ public class Pietra {
     /**
      * sceglie l'elemento
      */
-    /*
-    public Elementi sceglieElementi() {
 
-        Elementi tipo=Elementi.fuoco;//lo inizializzo, tanto viene cambiato
+    public void sceglieElementi() {
+
 
         //richiama la classe di serina er estrarre casu
 
-        switch (//EstrazioniCasuali.estraiIntero(1,10)) {
+        switch (EstrazioniCasuali.estraiIntero(1,10)) {
             case 1:
                 tipo = Elementi.fuoco;
                 break;
@@ -40,6 +41,7 @@ public class Pietra {
                 break;
             case 7:
                  tipo = Elementi.fulmine;
+                 break;
             case 8:
                  tipo = Elementi.sabbia;
                 break;
@@ -50,9 +52,9 @@ public class Pietra {
                 tipo = Elementi.tenebre;
                 break;
         }
-        return tipo;
+
     }
-*/
+
 }
 
 

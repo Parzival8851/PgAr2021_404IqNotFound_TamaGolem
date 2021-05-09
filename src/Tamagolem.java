@@ -5,30 +5,31 @@ public class Tamagolem
     private Deque<Pietra> pietre;
     private int vita;
 
+
     /**
      * controllo che il tamagolem abbia hp
      * @return ritorno falso se il golem è morto
      */
-    private boolean isAlive(){
-        if(vita==0)
+    private boolean isAlive()
+    {
+        if(vita<=0)
             return false;
         return true;
-    }
-    public static int estraiIntero(int min, int max) {
-        int range = max + 1 - min;
-        //int casual = rand.nextInt(range);
-        //return casual + min;
-        return 0;
     }
 
     public Tamagolem(){//costruttore
         pietre = new ArrayDeque<Pietra>();
-        //vita = Main.VITA_TAMAGOLEM;
+        vita = Main.V;
 
     }
 
-    private void sceltaPietre(Deque<Pietra> sassi){//aggiungo le pietre scelte a una queue di pietre
+    private void creaDequePietre(){
+    //richiamare sceltaPietre
+    }
+
+    private void sceltaPietre(Deque<Pietra> sassi){//aggiungo le pietre scelte a una deque di pietre
         for (Pietra x: sassi) {
+            //completare
             pietre.addFirst(x);
         }
     }
@@ -36,7 +37,6 @@ public class Tamagolem
     public int getVita(){
         return vita;
     }
-
 
     /**
      * Viene selezionata la prima pietra inserita nella deque e poi viene spostata in
@@ -50,9 +50,20 @@ public class Tamagolem
        return attuale;
     }
 
-    public void getDanno(int danno){
+    public void danno(int danno){
         vita-= danno;
     }
 
 
+
+    /**
+     * il golem è morto, reinizzializzo la vita, pulisco le pietre per poterle
+     * scegliere di nuovo e aggiorno roundMax
+     */
+    private void respawn()
+    {
+        this.vita=Main.V;
+        pietre.clear();
+        creaDequePietre();
+    }
 }

@@ -13,5 +13,5 @@ public enum Elementi
     fulmine,
     sabbia,
     luce,
-    tenebre;
+    tenebre
 }
