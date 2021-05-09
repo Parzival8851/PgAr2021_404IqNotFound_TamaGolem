@@ -42,7 +42,8 @@ public class Equilibrio
                         matrice[riga][colonna] = -sommaR; // per avere equilibrio l'ultima casella è l'opposto della somma di tutte le altre
                     } else {
                         aggiornaSommaC(colonna); // aggiorno sommaC per la cella su cui calcolo il valore per l'equilibrio
-
+                        int c = sommaC;
+                        int r = sommaR;
                         // a questo punto io ho la cella che possiede sia la somma orizzontale che verticale per la sua posizione
                         // calcolo i valori possibili di intersezione tra quelli possibili R\C per non sforare V, vita massima del tamagolem
 
@@ -137,13 +138,16 @@ public class Equilibrio
 
         switch (Math.abs(sum))
         {
-            case 0: // aggiungo da 1 a V
+            case 0: // aggiungo da 1 a V e da -1 a -V, non ho preferenze per averlo negativo o positivo
                 for (int i = 1; i < Main.V; i++)
+                {
                     temp.add(i);
+                    temp.add(-i);
+                }
                 break;
 
             case Main.V: // somma è il massimo possibile, aggiungo i valori opposti da |1| a |V-1| per abbassarla (o alzarla)
-                for (int i = 1; i < (Main.V-1); i++)
+                for (int i = 1; i < Main.V; i++)
                 {
                     int valore = -i*Integer.signum(sum);
                     temp.add(valore);
@@ -151,13 +155,13 @@ public class Equilibrio
                 break;
 
             default: // la somma è compresa tra 0 e |V|, aggiungo con segno opposto da |1| a |S-1| e con stesso segno da |1| a |V-S|
-                for (int i = 1; i < Math.abs(sum-1); i++) // aggiungo con segno opposto da |1| a |S-1|
+                for (int i = 1; i < Math.abs(sum); i++) // aggiungo con segno opposto da |1| a |S-1|
                 {
                     int valore = -i*Integer.signum(sum);
                     temp.add(valore);
                 }
 
-                for (int i = 1; i < Math.abs(Main.V-sum); i++) // aggiungo con stesso segno da |1| a |V-S|
+                for (int i = 1; i < (Main.V-Math.abs(sum)+1); i++) // aggiungo con stesso segno da |1| a |V-S|
                 {
                     int valore = i*Integer.signum(sum);
                     temp.add(valore);
