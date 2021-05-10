@@ -29,8 +29,8 @@ public class Tamagolem
 
     private void sceltaPietre(Deque<Pietra> sassi){//aggiungo le pietre scelte a una deque di pietre
         for (Pietra x: sassi) {
-            //completare
-            pietre.addFirst(x);
+                //completare
+                pietre.addFirst(x);
         }
     }
 
