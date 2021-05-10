@@ -92,10 +92,10 @@ public class Equilibrio
      */
     private void inizializzazioneCellaV()
     {
-        int riga=EstrazioniCasuali.estraiIntero(0, Main.N-1); // estarggo l'indice di riga
+        int riga=EstrazioniCasuali.estraiIntero(0, Main.N-2); // estraggo l'indice di riga
 
         ArrayList<Integer> temp =new ArrayList<>(); // creo un arraylist temporaneo con tutti gli indici tranne riga per evitare la diagonale
-        for (int i=0; i<Main.N; i++)
+        for (int i=0; i<(Main.N-1); i++)
             if (i!=riga) temp.add(i);
 
         Collections.shuffle(temp); // mix degi possibili indici
@@ -147,7 +147,7 @@ public class Equilibrio
                 break;
 
             case Main.V: // somma è il massimo possibile, aggiungo i valori opposti da |1| a |V-1| per abbassarla (o alzarla)
-                for (int i = 1; i < Main.V; i++)
+                for (int i = 1; i < (Main.V+1); i++)
                 {
                     int valore = -i*Integer.signum(sum);
                     temp.add(valore);
@@ -155,15 +155,21 @@ public class Equilibrio
                 break;
 
             default: // la somma è compresa tra 0 e |V|, aggiungo con segno opposto da |1| a |S-1| e con stesso segno da |1| a |V-S|
-                for (int i = 1; i < Math.abs(sum); i++) // aggiungo con segno opposto da |1| a |S-1|
+                for (int i = 1; i < Math.abs(sum); i++) // aggiungo con segno opposto da |1| a |S-1| -> torno a (stesso segno) 1
                 {
                     int valore = -i*Integer.signum(sum);
                     temp.add(valore);
                 }
 
-                for (int i = 1; i < (Main.V-Math.abs(sum)+1); i++) // aggiungo con stesso segno da |1| a |V-S|
+                for (int i = 1; i < (Main.V-Math.abs(sum)+1); i++) // aggiungo con stesso segno da |1| a |V-S| -> arrivo a (stesso segno) V
                 {
                     int valore = i*Integer.signum(sum);
+                    temp.add(valore);
+                }
+
+                for(int i = (Math.abs(sum)+1); i<(Main.V+1); i++) // aggiungo con segno opposto da |S+1| a |V| -> arrivo a (segno opposto) V stando al massimo a V
+                {
+                    int valore = -i*Integer.signum(sum);
                     temp.add(valore);
                 }
                 break;
@@ -194,7 +200,13 @@ public class Equilibrio
             {
                 System.out.print(matrice[i][j] + "  ");
             }
-            System.out.println();
+            aggiornaSommaR(i);
+            System.out.println("SR"+sommaR);
+        }
+        for (int i = 0; i < Main.N; i++)
+        {
+            aggiornaSommaC(i);
+            System.out.print("SC"+sommaC+" ");
         }
     }
 
