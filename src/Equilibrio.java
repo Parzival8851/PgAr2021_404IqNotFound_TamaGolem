@@ -1,4 +1,5 @@
 import it.unibs.fp.mylib.EstrazioniCasuali;
+import it.unibs.fp.mylib.InputDati;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +11,7 @@ public class Equilibrio
     static int[][] matrice = new int[Main.N][Main.N]; // matrice per l'equilibrio
     static int sommaR = 0; // somma della riga
     static int sommaC = 0; // somma della colonna
+    static boolean controllo=false;
 
     public static void main(String[] args)
     {
@@ -17,6 +19,24 @@ public class Equilibrio
         eq.stampaEquilibrio();
 
 
+    }
+
+
+
+
+    static boolean getControllo()
+    {
+        return controllo;
+    }
+
+    public static boolean controlloEq()
+    {
+        for (int i = 0; i < Main.N; i++)
+        {
+            aggiornaSommaR(i);
+            if(sommaR!=0) return true;
+        }
+        return false;
     }
 
     /**
@@ -62,14 +82,16 @@ public class Equilibrio
 
 
 
-
+        controllo=controlloEq();
     }
+
+
 
     /**
      * all'inizio della riga aggiorno la sua somma
      * @param riga la riga su cui sto sommando
      */
-    private void aggiornaSommaR(int riga)
+    private static void aggiornaSommaR(int riga)
     {
         sommaR=0;
         for (int i = 0; i < Main.N; i++)

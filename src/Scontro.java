@@ -21,7 +21,7 @@ public class Scontro {
         this.player[1] = g2;
         this.equi = e;
     }
-
+/*
     private void round(Tamagolem[] golem){
 
         Tamagolem t1 = player[0].getGolem();
@@ -67,7 +67,8 @@ public class Scontro {
             }else System.out.println(GOLEMPLAYER+ player[0].getNome()+ RIMANGONO+ t1.getVita()+PS);
 
         }
-    }
+    }*/
+
 
     /**
      * Controllo che la partita non sia finita, ritorno -1 se è cosi,
