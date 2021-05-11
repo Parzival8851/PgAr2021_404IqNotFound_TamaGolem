@@ -5,9 +5,10 @@ import it.unibs.fp.mylib.EstrazioniCasuali;
 
 public class Pietra {
 
-    private Elementi tipo;
+    private String tipo;
+    private int indice;
 
-    public Elementi getTipo(){
+    public String getTipo(){
         return tipo;
     }
 
@@ -15,41 +16,52 @@ public class Pietra {
      * sceglie l'elemento
      */
 
-    public void sceglieElementi() {
+    public Pietra(int i)
+    {
+        setTipo(i);
+    }
+
+    public int getIndice() {
+        return indice;
+    }
 
 
-        //richiama la classe di serina er estrarre casu
 
-        switch (EstrazioniCasuali.estraiIntero(1,10)) {
+    public void setTipo(int i)
+    {
+        indice=i;
+
+        switch (i)
+        {
+            case 0:
+                tipo = "fuoco";
+                break;
             case 1:
-                tipo = Elementi.fuoco;
+                tipo = "acqua";
                 break;
             case 2:
-                tipo = Elementi.acqua;
+                tipo = "terra";
                 break;
             case 3:
-                tipo = Elementi.terra;
+                tipo = "aria";
                 break;
             case 4:
-                tipo = Elementi.aria;
+                tipo ="ghiaccio";
                 break;
             case 5:
-                tipo = Elementi.ghiaccio;
+                tipo = "nebbia";
                 break;
             case 6:
-                tipo = Elementi.nebbia;
-                break;
-            case 7:
-                 tipo = Elementi.fulmine;
+                 tipo = "fulmine";
                  break;
+            case 7:
+                 tipo = "sabbia";
+                break;
             case 8:
-                 tipo = Elementi.sabbia;
+                tipo = "luce";
                 break;
             case 9:
-                tipo = Elementi.luce;
-                break;
-            case 10:
-                tipo = Elementi.tenebre;
+                tipo = "tenebre";
                 break;
         }
 

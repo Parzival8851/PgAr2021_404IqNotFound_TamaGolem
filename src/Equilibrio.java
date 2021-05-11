@@ -60,24 +60,21 @@ public class Equilibrio
                     if (colonna == (Main.N - 1)) // sono all'ultima cella
                     {
                         matrice[riga][colonna] = -sommaR; // per avere equilibrio l'ultima casella è l'opposto della somma di tutte le altre
-                    } else {
+                    }
+                    else
+                    {
                         aggiornaSommaC(colonna); // aggiorno sommaC per la cella su cui calcolo il valore per l'equilibrio
-                        int c = sommaC;
-                        int r = sommaR;
+
                         // a questo punto io ho la cella che possiede sia la somma orizzontale che verticale per la sua posizione
                         // calcolo i valori possibili di intersezione tra quelli possibili R\C per non sforare V, vita massima del tamagolem
 
                         matrice[riga][colonna] = calcolaCella(riga, colonna); // calcolo cella
                     }
 
-
                     matrice[colonna][riga] = -matrice[riga][colonna]; // set opposta
                     sommaR += matrice[riga][colonna];
                 }
-
-
             }
-
         }
 
 
@@ -112,7 +109,7 @@ public class Equilibrio
     /**
      * inizializzo una cella a caso non sulla diagonale che conterrà V per avere sup(W)=V
      */
-    private void inizializzazioneCellaV()
+    private void inizializzazioneCellaV() // evito l'ultima riga e colonna per non generare casi scomodi di somma finale
     {
         int riga=EstrazioniCasuali.estraiIntero(0, Main.N-2); // estraggo l'indice di riga
 
@@ -206,7 +203,7 @@ public class Equilibrio
      * @param colonna y
      * @return forza dell'interazione
      */
-    private int getForza(int riga, int colonna)
+    public int getForza(int riga, int colonna)
     {
         return matrice[riga][colonna];
     }
@@ -214,7 +211,7 @@ public class Equilibrio
     /**
      * stampo per l'utente l'intera matrice
      */
-    private void stampaEquilibrio()
+    public void stampaEquilibrio()
     {
         for (int i = 0; i < Main.N; i++)
         {

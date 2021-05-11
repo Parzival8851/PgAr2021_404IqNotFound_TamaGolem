@@ -4,18 +4,26 @@ import it.unibs.fp.mylib.InputDati;
 
 import java.util.ArrayList;
 
-public class Giocatore {
+public class Giocatore
+{
+    public static final String NOME_GIOCATORE = "Inserisci il nome del player";
     private String nome;
     private Tamagolem golem;
     private int roundMax=1;
 
-    public Giocatore(String nome){
+    public Giocatore()
+    {
         golem = new Tamagolem();
-        this.nome=nome;
+        scegliNome();
     }
 
-    private void scegliNome(){
-        this.nome= InputDati.leggiStringa("Inserisci il nome del player");
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    private void scegliNome()
+    {
+        this.nome= InputDati.leggiStringa(NOME_GIOCATORE);
     }
 
     public String getNome(){
