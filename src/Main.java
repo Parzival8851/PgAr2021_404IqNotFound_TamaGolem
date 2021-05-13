@@ -3,7 +3,7 @@ import it.unibs.fp.mylib.InputDati;
 
 public class Main
 {
-    public static final String MSG_SCELTA = "scegli il numero degli elementi\ntra 3 e 5(inclusi) se vuoi che il livello della partta sia facile\ntra 6 e 8(inclusi) se vuoi che il livello della partita sia intermedio\ntra 9 e 10(inclusi) se vuoi che il livello della partita sia difficile\nnon inserire altri valori perchè potrebbero compromettere le meccaniche del gioco";
+    public static final String MSG_SCELTA = "scegli il numero degli elementi\ntra 3 e 5(inclusi) se vuoi che il livello della partita sia facile\ntra 6 e 8(inclusi) se vuoi che il livello della partita sia intermedio\ntra 9 e 10(inclusi) se vuoi che il livello della partita sia difficile\nnon inserire altri valori perchè potrebbero compromettere le meccaniche del gioco";
     private static final String MSG_BENVENUTO = "Benvenuto all'arena per effetteuare nuovi scontri e migliorare le tue capacità per governare gli elementi";
 
     public static final int N=InputDati.leggiIntero(MSG_BENVENUTO+"\n"+MSG_SCELTA, 3, 10);
