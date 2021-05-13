@@ -14,25 +14,37 @@ public class Main
     public static final int V=10; // impostata a 10
     public static final int S=Math.round(2*G*P/N) *N;
     public static final String ERR_NOME_G = "Giocatori con nomi identici, reinserire il secondo nome: ";
-    private static Giocatore gamer[]=new Giocatore[2];
+    public static final String RIGIOCARE = "Vuoi rigiocare?";
+    private static Giocatore[] gamer=new Giocatore[2];
     private static Equilibrio eq=new Equilibrio();
-    private static Scontro s=null;
-    private static Pietra sassi[]=null;
+    private static Scontro s;
+    private static Pietra[] sassi;
 
     public static void main(String[] args)
     {
-        inizio();
-        // serve per capire la scelta del numero di elementi
-        // e controllare che il numero inserito sia valido
+        do
+        {
+            inizio();
+            // serve per capire la scelta del numero di elementi
+            // e controllare che il numero inserito sia valido
 
-        // creo i due giocatori
-        gamer[0]=new Giocatore();
-        gamer[1]=new Giocatore();
-        controlloNome();
+            setPietre();
 
-        // inizio la battaglia
-        s= new Scontro(gamer[0],gamer[1], eq); // preparo i golem
-        s.round(); // battaglia vera e propria
+            // creo i due giocatori
+            gamer[0]=new Giocatore();
+            gamer[1]=new Giocatore();
+            controlloNome();
+
+            // inizio la battaglia
+            s= new Scontro(gamer[0],gamer[1], eq); // preparo i golem
+            s.round(); // battaglia vera e propria
+            s.isWinner();
+
+            eq.stampaEquilibrio();
+
+
+        }while(InputDati.yesOrNo(RIGIOCARE));
+
 
 
 
@@ -57,10 +69,11 @@ public class Main
     {
         System.out.println(MSG_BENVENUTO);
         InputDati.leggiStringa(PREMI);
+
     }
 
 
-    private void setPietre()
+    private static void setPietre()
     {
         sassi=new Pietra[N];
 
@@ -74,4 +87,5 @@ public class Main
     {
         return sassi[i];
     }
-}
+    }
+

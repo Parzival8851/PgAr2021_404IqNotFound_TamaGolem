@@ -8,10 +8,10 @@ import java.util.Random;
 
 public class Equilibrio
 {
-    static int[][] matrice = new int[Main.N][Main.N]; // matrice per l'equilibrio
-    static int sommaR = 0; // somma della riga
-    static int sommaC = 0; // somma della colonna
-    static boolean controllo=false;
+    private static int[][] matrice = new int[Main.N][Main.N]; // matrice per l'equilibrio
+    private static int sommaR = 0; // somma della riga
+    private static int sommaC = 0; // somma della colonna
+    private static boolean controllo=false;
 
     public static void main(String[] args)
     {
@@ -20,8 +20,6 @@ public class Equilibrio
 
 
     }
-
-
 
 
     static boolean getControllo()
