@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Tamagolem
 {
-    private static final String CARICAPIETRE="Devi caricare le pietre nel tuo golem, verranno scagliate nell'ordine di caricamento";
+    private static final String CARICAPIETRE="Devi caricare le pietre nel tuo golem, verranno scagliate nell'ordine di caricamento\n";
 
     private Deque<Pietra> pietre;
     private int vita;
@@ -41,13 +41,16 @@ public class Tamagolem
         // pietre da caricare
         for (int i = 0; i < Main.P; i++)
         {
+            System.out.println("Pietra N°: "+(i+1)+" di "+Main.P);
+
             // elementi da cui posso scegliere per ogni pietra
             for (int j = 0; j < Main.N; j++)
                 if (pietreTemp.get(j)>0) // mostro solo gli elementi in cui ho ancora pietre
-                    System.out.println("Puoi scegliere ancora "+ pietreTemp.get(j) + " di " + Main.getSasso(j).getTipo());
+                    System.out.println("Puoi scegliere ancora "+ pietreTemp.get(j) + " pietre di " + Main.getSasso(j).getTipo()+" ("+(Main.getSasso(j).getIndice())+")");
+
 
             // stringa scegli pietra
-            int scelta=InputDati.leggiIntero("scegliele l'elemento della pietra che carico", 0, 9);
+            int scelta=InputDati.leggiIntero("\nScegliere l'elemento della pietra che carico inserendo il numero tra parantesi", 0, Main.N-1);
             // setto nella coda la pietra scelta, dal basso così avrò la prima pietra che sceglie in alto
             pietre.addLast(Main.getSasso(scelta));
             // tolgo una pietra dall'elenco che posso scegliere

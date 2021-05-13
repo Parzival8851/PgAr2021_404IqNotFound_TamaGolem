@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Giocatore
 {
-    public static final String NOME_GIOCATORE = "Inserisci il nome del player";
+    public static final String NOME_GIOCATORE = "Inserisci il nome del player: ";
     private String nome;
     private Tamagolem golem;
     private int roundMax=1;
@@ -44,6 +44,6 @@ public class Giocatore
 
     public int roundRimanenti()
     {
-        return Main.G-roundMax;
+        return Main.G-roundMax+1;
     }
 }

@@ -4,7 +4,9 @@ import it.unibs.fp.mylib.EstrazioniCasuali;
 public class Scontro
 {
     public static final String PIETRE_UGUALI = "Le pietre scelte sono tutte uguali: Il giocatore ";
-    public static final String NEW_PIETRE = "reimmette le sue pietre";
+    public static final String NEW_PIETRE = " reimmette le sue pietre ";
+    public static final String NUTRIRE = "Ora entrambi i giocatori nutriranno il loro golem con " + Main.P + " pietre per iniziare lo scontro\n\n";
+    public static final String SCELTA_PIETRE = "!  Tocca a te scegliere le pietre:\n\n";
     private Giocatore[] player=new Giocatore[2];
     private int vincitore=0;
     private Equilibrio equi=null;
@@ -12,13 +14,13 @@ public class Scontro
     private static final String NUMTAMA = "Numero di Tamagolem esaurito ";
     private static final String VINCE= "Vince ";
     private static final String GOLEMDI= ", il golem di ";
-    private static final String DANNO= "subisce un danno pari a ";
-    private static final String LANCIA= "lancia una pietra di ";
+    private static final String DANNO= " subisce un danno pari a ";
+    private static final String LANCIA= " lancia una pietra di ";
     private static final String ELIMINATO="Vieni eliminato il golem di ";
     private static final String RIMANGONO=" rimangono";
-    private static final String GOLEMSQUADRA="golem in squadra";
-    private static final String GOLEMPLAYER="Al golem del giocatore";
-    private static final String PS="punti vita";
+    private static final String GOLEMSQUADRA=" golem in squadra ";
+    private static final String GOLEMPLAYER=" Al golem del giocatore ";
+    private static final String PS=" punti vita";
     private static final String UGUALI="Le pietre dei due golem sono uguali";
 
 
@@ -45,12 +47,16 @@ public class Scontro
         Tamagolem t2 = player[1].getGolem();
 
         //scegliere le pietre del golem
+        System.out.println(NUTRIRE);
+        System.out.println(player[0].getNome()+ SCELTA_PIETRE);
         t1.sceltaPietre();
+        System.out.println(player[1].getNome()+ SCELTA_PIETRE);
         t2.sceltaPietre();
 
         // vado avanti quando (entrambi i golem hanno ancora vita E) ho ancora dei golem con cui giocare
         while (/*t1.getVita()>0 && t2.getVita()>0 &&*/ controlloGolem(0) && controlloGolem(1))
         {
+            System.out.println();
             while(!controlloPietre(t1,t2))
             {
                 int caso = EstrazioniCasuali.estraiIntero(0,1);
@@ -59,7 +65,7 @@ public class Scontro
                 else t2.sceltaPietre();
             }
 
-            System.out.println("\n" + player[0].getNome() + LANCIA + t1.getPietra().getTipo() + "," +
+            System.out.println("\n" + player[0].getNome() + LANCIA + t1.getPietra().getTipo() + ", " +
                     player[1].getNome() + LANCIA + t2.getPietra().getTipo());
 
 
@@ -81,7 +87,7 @@ public class Scontro
                     System.out.println(ELIMINATO + player[1].getNome());
                     t2.respawn();
                     player[1].aggiornaRound();
-                    System.out.println(player[1].getNome() + RIMANGONO + player[1].roundRimanenti() + GOLEMSQUADRA);
+                    System.out.println("A " +player[1].getNome() + RIMANGONO + player[1].roundRimanenti() + GOLEMSQUADRA);
 
                 } else // altrimenti comunico la vita rimanente di G2
                     System.out.println(GOLEMPLAYER + player[1].getNome() + RIMANGONO + t2.getVita() + PS);
@@ -121,7 +127,7 @@ public class Scontro
     /**
      * Controllo che la partita non sia finita, ritorno -1 se è cosi,
      * 0 se vince il player1, 1 se vince il player2
-     * @return
+     *
      */
     public void isWinner()
     {
@@ -153,6 +159,7 @@ public class Scontro
         return true;//ritorno vero se il numero max di tamagolem non è superato
     }
 
+    /*
     public Giocatore getPlayer1()
     {
         return player[0];
@@ -162,6 +169,7 @@ public class Scontro
     {
         return player[1];
     }
+    */
 
     private boolean controlloPietre(Tamagolem t1, Tamagolem t2)
     {
