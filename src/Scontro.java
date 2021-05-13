@@ -1,5 +1,9 @@
+import it.unibs.fp.mylib.EstrazioniCasuali;
+
 public class Scontro
 {
+    public static final String PIETRE_UGUALI = "Le pietre scelte sono tutte uguali: Il giocatore ";
+    public static final String NEW_PIETRE = "reimmette le sue pietre";
     private Giocatore[] player=new Giocatore[2];
     private int vincitore=0;
     private Equilibrio equi=null;
@@ -39,55 +43,76 @@ public class Scontro
         Tamagolem t1 = player[0].getGolem();
         Tamagolem t2 = player[1].getGolem();
 
+        //scegliere le pietre del golem
+        t1.sceltaPietre();
+        t2.sceltaPietre();
 
-        while(t1.getVita()>0 && t2.getVita()>0 && controlloGolem(1) && controlloGolem(2))
+        // vado avanti quando (entrambi i golem hanno ancora vita E) ho ancora dei golem con cui giocare
+        while (/*t1.getVita()>0 && t2.getVita()>0 &&*/ controlloGolem(1) && controlloGolem(2))
         {
-            //scegliere le pietre del golem
-            t1.sceltaPietre();
-            t2.sceltaPietre();
+            while(!controlloPietre(t1,t2))
+            {
+                int caso = EstrazioniCasuali.estraiIntero(0,1);
+                System.out.println(PIETRE_UGUALI +player[caso].getNome()+ NEW_PIETRE);
+                if(caso==0) t1.sceltaPietre();
+                else t2.sceltaPietre();
+            }
 
-            System.out.println("\n" + player[0].getNome() + LANCIA + t1.getPietra().getTipo()+ "," +
+            System.out.println("\n" + player[0].getNome() + LANCIA + t1.getPietra().getTipo() + "," +
                     player[1].getNome() + LANCIA + t2.getPietra().getTipo());
 
-            int p1=t1.getPietra().getIndice();
-            int p2=t2.getPietra().getIndice();
 
-            if(equi.matrice[p1][p2]>0)
-            {//vince la pietra p1
-                t2.danno(equi.matrice[p1][p2]);
-                System.out.println(VINCE + player[0].getNome() + GOLEMDI + player[1].getNome() +
-                        DANNO + equi.matrice[p1][p2]);
-                if(t2.getVita()<=0)
+            int p1 = t1.getPietra().getIndice();
+            int p2 = t2.getPietra().getIndice();
+            t1.aggiornaPietra();
+            t2.aggiornaPietra();
+
+            int forza = equi.getForza(p1, p2);
+
+            if (forza > 0) //vince la pietra p1 -> danno al golem 2
+            {
+                t2.danno(forza); // aggiorno la vita con il danno preso e comunico
+                System.out.println(VINCE + player[0].getNome() + GOLEMDI + player[1].getNome() + DANNO + forza);
+
+                if (t2.getVita() <= 0) // se G2 è morto, respawn, aggiorno il numero di golem usati e il giocatore sceglie di nuovo le pietre e comunico
                 {
-                    player[1].eliminaGolem();
-                    System.out.println(ELIMINATO + player[2].getNome());
-                    if(player[1].numGolem()>0)
-                    {
-                        player[1].setGolemAttivo();
-                        System.out.println(player[1].getNome()+ RIMANGONO+ player[1].numGolem + GOLEMSQUADRA);
 
-                    }//else vince la partita il player 1
-                }else System.out.println(GOLEMPLAYER+ player[1].getNome()+ RIMANGONO+ t2.getVita()+PS);
+                    System.out.println(ELIMINATO + player[1].getNome());
+                    t2.respawn();
+                    player[1].aggiornaRound();
+                    System.out.println(player[1].getNome() + RIMANGONO + player[1].roundRimanenti() + GOLEMSQUADRA);
+
+                } else // altrimenti comunico la vita rimanente di G2
+                    System.out.println(GOLEMPLAYER + player[1].getNome() + RIMANGONO + t2.getVita() + PS);
+
+                // vita rimanente di G1
+                System.out.println(GOLEMPLAYER + player[0].getNome() + RIMANGONO + t1.getVita() + PS);
 
             }
-            else if(equi.getForza(p1,p2)==0)
+            else if (forza == 0) // interazione tra gli stessi elementi
             {
                 System.out.println(UGUALI);
             }
-            else // picchio il primo
+            else // vince la pietra p2 -> danno al golem 1
             {
-                t1.danno(equi.matrice[p2][p1]);
-                System.out.println(VINCE + player[1].getNome() + GOLEMDI + player[0].getNome() +
-                        DANNO + equi.matrice[p2][p1]);
-                if(player[0].numGolem()>0)
+                t1.danno(-forza);
+                System.out.println(VINCE + player[1].getNome() + GOLEMDI + player[0].getNome() + DANNO + (-forza));
+
+                if (t1.getVita() <= 0) // se G1 è morto, respawn, aggiorno il numero di golem usati e il giocatore sceglie di nuovo le pietre e comunico
                 {
-                    player[0].setGolemAttivo();
-                    System.out.println(player[0].getNome()+ RIMANGONO+ player[0].numGolem + GOLEMSQUADRA);
 
-                }//else vince la partita il player 2
+                    System.out.println(ELIMINATO + player[0].getNome());
+                    t1.respawn();
+                    player[0].aggiornaRound();
+                    System.out.println(player[0].getNome() + RIMANGONO + player[0].roundRimanenti() + GOLEMSQUADRA);
+
+                }
+                else // altrimenti comunico la vita rimanente di G1
+                    System.out.println(GOLEMPLAYER + player[0].getNome() + RIMANGONO + t1.getVita() + PS);
+
+                // vita rimanente di G2
+                System.out.println(GOLEMPLAYER + player[1].getNome() + RIMANGONO + t2.getVita() + PS);
             }
-            System.out.println(GOLEMPLAYER+ player[0].getNome()+ RIMANGONO+ t1.getVita()+PS);
-
         }
     }
 
@@ -97,24 +122,20 @@ public class Scontro
      * 0 se vince il player1, 1 se vince il player2
      * @return
      */
-    private int isWinner()
+    public void isWinner()
     {
         if(!controlloGolem(0))
         {
             System.out.println("Il giocatore 1 ha vinto");
-            return 0;
+
         }
         if(!controlloGolem(1))
         {
             System.out.println("Il giocatore 2 ha vinto");
-            return 1;
         }
-        return -1;
     }
 
-    public void scontro(Equilibrio equilibrio){
-        this.equi=equilibrio;
-    }
+
 
     /**
      * Siccome non abbiamo un array di golem controlliamo di non sforare il numero di golem
@@ -141,13 +162,20 @@ public class Scontro
         return player[1];
     }
 
-    private int numPietra(String pietra)
+    private boolean controlloPietre(Tamagolem t1, Tamagolem t2)
     {
-        for(int i=0; i<elementi.lenght;i++)
+        int controllo=0;
+        for (int i = 0; i < Main.P; i++)
         {
-            if(elementi[i].equals(pietra))
-                return i;
-            return -1;
+            if (t1.getPietra().getTipo().equalsIgnoreCase(t2.getPietra().getTipo()))
+                controllo++;
+            t1.aggiornaPietra();
+            t2.aggiornaPietra();
         }
+
+        if (controllo==Main.P) return false;
+        return true;
     }
+
+
 }

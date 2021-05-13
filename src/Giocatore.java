@@ -31,10 +31,19 @@ public class Giocatore
     }
 
     public Tamagolem getGolem() {
-        return golem;
-    }
+        return golem; }
 
     public int getRoundMax() {
         return roundMax;
+    }
+
+    public void aggiornaRound()
+    {
+        roundMax++;
+    }
+
+    public int roundRimanenti()
+    {
+        return Main.G-roundMax;
     }
 }
