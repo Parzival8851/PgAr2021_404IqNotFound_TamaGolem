@@ -16,7 +16,7 @@ public class Scontro
     private static final String GOLEMDI= ", il golem di ";
     private static final String DANNO= " subisce un danno pari a ";
     private static final String LANCIA= " lancia una pietra di ";
-    private static final String ELIMINATO="Vieni eliminato il golem di ";
+    private static final String ELIMINATO="Viene eliminato il golem di ";
     private static final String RIMANGONO=" rimangono ";
     private static final String GOLEMSQUADRA=" golem in squadra ";
     private static final String GOLEMPLAYER=" Al golem del giocatore ";
