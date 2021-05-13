@@ -1,5 +1,6 @@
 import it.unibs.fp.mylib.EstrazioniCasuali;
 
+
 public class Scontro
 {
     public static final String PIETRE_UGUALI = "Le pietre scelte sono tutte uguali: Il giocatore ";
