@@ -48,7 +48,7 @@ public class Scontro
         t2.sceltaPietre();
 
         // vado avanti quando (entrambi i golem hanno ancora vita E) ho ancora dei golem con cui giocare
-        while (/*t1.getVita()>0 && t2.getVita()>0 &&*/ controlloGolem(1) && controlloGolem(2))
+        while (/*t1.getVita()>0 && t2.getVita()>0 &&*/ controlloGolem(0) && controlloGolem(1))
         {
             while(!controlloPietre(t1,t2))
             {

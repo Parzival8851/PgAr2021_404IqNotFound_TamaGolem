@@ -15,10 +15,10 @@ public class Main
     public static final int S=Math.round(2*G*P/N) *N;
     public static final String ERR_NOME_G = "Giocatori con nomi identici, reinserire il secondo nome: ";
     public static final String RIGIOCARE = "Vuoi rigiocare?";
-    private static Giocatore gamer[]=new Giocatore[2];
+    private static Giocatore[] gamer=new Giocatore[2];
     private static Equilibrio eq=new Equilibrio();
-    private static Scontro s=null;
-    private static Pietra sassi[]=null;
+    private static Scontro s;
+    private static Pietra[] sassi;
 
     public static void main(String[] args)
     {
@@ -27,6 +27,8 @@ public class Main
             inizio();
             // serve per capire la scelta del numero di elementi
             // e controllare che il numero inserito sia valido
+
+            setPietre();
 
             // creo i due giocatori
             gamer[0]=new Giocatore();
@@ -37,6 +39,8 @@ public class Main
             s= new Scontro(gamer[0],gamer[1], eq); // preparo i golem
             s.round(); // battaglia vera e propria
             s.isWinner();
+
+            eq.stampaEquilibrio();
 
 
         }while(InputDati.yesOrNo(RIGIOCARE));
@@ -65,10 +69,11 @@ public class Main
     {
         System.out.println(MSG_BENVENUTO);
         InputDati.leggiStringa(PREMI);
+
     }
 
 
-    private void setPietre()
+    private static void setPietre()
     {
         sassi=new Pietra[N];
 
