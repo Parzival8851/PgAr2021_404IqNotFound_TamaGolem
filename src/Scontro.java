@@ -1,12 +1,16 @@
 import it.unibs.fp.mylib.EstrazioniCasuali;
 
+import java.sql.SQLOutput;
+import java.util.*;
 
 public class Scontro
 {
     public static final String PIETRE_UGUALI = "Le pietre scelte sono tutte uguali: Il giocatore ";
     public static final String NEW_PIETRE = " reimmette le sue pietre ";
     public static final String NUTRIRE = "Ora entrambi i giocatori nutriranno il loro golem con " + Main.P + " pietre per iniziare lo scontro\n\n";
-    public static final String SCELTA_PIETRE = "!  Tocca a te scegliere le pietre:\n\n";
+    public static final String SCELTA_PIETRE = "!  Tocca a te scegliere le pietre:\n";
+    public static final String OVERKILL = "MOSSA OVERKILL!\n";
+    public static final int WAITIME = 3000;
     private Giocatore[] player=new Giocatore[2];
     private int vincitore=0;
     private Equilibrio equi=null;
@@ -16,13 +20,13 @@ public class Scontro
     private static final String GOLEMDI= ", il golem di ";
     private static final String DANNO= " subisce un danno pari a ";
     private static final String LANCIA= " lancia una pietra di ";
-    private static final String ELIMINATO="Viene eliminato il golem di ";
+    private static final String ELIMINATO="Viene killato il golem di ";
     private static final String RIMANGONO=" rimangono ";
     private static final String GOLEMSQUADRA=" golem in squadra ";
     private static final String GOLEMPLAYER=" Al golem del giocatore ";
     private static final String PS=" punti vita";
     private static final String UGUALI="Le pietre dei due golem sono uguali";
-
+    private static final String A = "A ";
 
     /**
      * creo il terreno di gioco
@@ -40,8 +44,7 @@ public class Scontro
     /**
      *
      */
-    public void round()
-    {
+    public void round() throws InterruptedException {
         // salvo i golem in uso per non doverli scrivere ogni volta
         Tamagolem t1 = player[0].getGolem();
         Tamagolem t2 = player[1].getGolem();
@@ -54,7 +57,7 @@ public class Scontro
         t2.sceltaPietre();
 
         // vado avanti quando (entrambi i golem hanno ancora vita E) ho ancora dei golem con cui giocare
-        while (/*t1.getVita()>0 && t2.getVita()>0 &&*/ controlloGolem(0) && controlloGolem(1))
+        do
         {
             System.out.println();
             while(!controlloPietre(t1,t2))
@@ -75,6 +78,7 @@ public class Scontro
             t2.aggiornaPietra();
 
             int forza = equi.getForza(p1, p2);
+            if(forza==Main.V) System.out.println(OVERKILL);
 
             if (forza > 0) //vince la pietra p1 -> danno al golem 2
             {
@@ -87,7 +91,8 @@ public class Scontro
                     System.out.println(ELIMINATO + player[1].getNome());
                     t2.respawn();
                     player[1].aggiornaRound();
-                    System.out.println("A " +player[1].getNome() + RIMANGONO + player[1].roundRimanenti() + GOLEMSQUADRA);
+                    System.out.println(A +player[1].getNome() + RIMANGONO + player[1].roundRimanenti() + GOLEMSQUADRA);
+                    System.out.println(A + player[0].getNome() + RIMANGONO + player[0].roundRimanenti() + GOLEMSQUADRA);
 
                 } else // altrimenti comunico la vita rimanente di G2
                     System.out.println(GOLEMPLAYER + player[1].getNome() + RIMANGONO + t2.getVita() + PS);
@@ -111,8 +116,8 @@ public class Scontro
                     System.out.println(ELIMINATO + player[0].getNome());
                     t1.respawn();
                     player[0].aggiornaRound();
-                    System.out.println(player[0].getNome() + RIMANGONO + player[0].roundRimanenti() + GOLEMSQUADRA);
-
+                    System.out.println(A + player[0].getNome() + RIMANGONO + player[0].roundRimanenti() + GOLEMSQUADRA);
+                    System.out.println(A + player[1].getNome() + RIMANGONO + player[1].roundRimanenti() + GOLEMSQUADRA);
                 }
                 else // altrimenti comunico la vita rimanente di G1
                     System.out.println(GOLEMPLAYER + player[0].getNome() + RIMANGONO + t1.getVita() + PS);
@@ -120,27 +125,30 @@ public class Scontro
                 // vita rimanente di G2
                 System.out.println(GOLEMPLAYER + player[1].getNome() + RIMANGONO + t2.getVita() + PS);
             }
-        }
+            Thread.sleep(WAITIME);
+            premiPerContinuare();
+        }while (/*t1.getVita()>0 && t2.getVita()>0 &&*/ controlloGolem(0) && controlloGolem(1));
     }
 
 
     /**
-     * Controllo che la partita non sia finita, ritorno -1 se è cosi,
-     * 0 se vince il player1, 1 se vince il player2
+     * Controllo che la partita non sia finita
      *
      */
     public void isWinner()
     {
         if(!controlloGolem(0))
         {
-            System.out.println("Il giocatore 1 ha vinto");
+            System.out.println("Il giocatore "+player[1].getNome()+" ha vinto");
 
         }
         if(!controlloGolem(1))
         {
-            System.out.println("Il giocatore 2 ha vinto");
+            System.out.println("Il giocatore "+ player[0].getNome() +" ha vinto");
         }
+        System.out.println("Ottima battaglia!\n\n");
     }
+
 
 
 
@@ -153,7 +161,7 @@ public class Scontro
     {
         if(player[index].getRoundMax()>Main.G)
         {
-            System.out.println(NUMTAMA);
+            //System.out.println(NUMTAMA);
             return false;
         }
         return true;//ritorno vero se il numero max di tamagolem non è superato
@@ -186,5 +194,11 @@ public class Scontro
         return true;
     }
 
+    private void premiPerContinuare(){
+        Scanner input = new Scanner(System.in);
+        input.useDelimiter("\r\n");
 
+        System.out.println("\nPremere un tasto per continuare:");
+        String s = input.nextLine();
+    }
 }

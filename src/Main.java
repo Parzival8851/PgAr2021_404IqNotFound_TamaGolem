@@ -12,16 +12,15 @@ public class Main
     public static final int V=10; // impostata a 10
     public static final int S=Math.round(2*G*P/N) *N;
     public static final String ERR_NOME_G = "Giocatori con nomi identici, reinserire nome del secondo giocatore: ";
-    public static final String RIGIOCARE = "Vuoi rigiocare?";
-    public static final String MSG_INIZIALE = "L'arena consiste in uno scontro tra due giocatori e i loro Tamagolem, ogni golem avrà delle pietre che scagliera' contro l'altro fino alla distruzione dell'uno o dell'altro.\n\n Ora andremo a creare i nostri campioni!";
+    public static final String RIGIOCARE = "\n\nVuoi rigiocare?";
+    public static final String MSG_INIZIALE = "L'arena consiste in uno scontro tra due giocatori e i loro Tamagolem, \nogni golem avrà delle pietre che scagliera' contro l'altro \nfino alla distruzione dell'uno o dell'altro.\n\nOra andremo a creare i nostri campioni!";
     public static final String PRIMO_GIOCATORE = "PRIMO GIOCATORE! Presentati:";
     private static Giocatore[] gamer=new Giocatore[2];
     private static Equilibrio eq=new Equilibrio();
     private static Scontro s;
     private static Pietra[] sassi;
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws InterruptedException {
         do
         {
             // serve per capire la scelta del numero di elementi
