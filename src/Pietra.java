@@ -1,7 +1,6 @@
 
 //import it.unibs.fp.mylib.EstrazioniCasuali;
 
-import it.unibs.fp.mylib.EstrazioniCasuali;
 
 public class Pietra {
 
@@ -15,7 +14,6 @@ public class Pietra {
     /**
      * sceglie l'elemento
      */
-
     public Pietra(int i)
     {
         setTipo(i);

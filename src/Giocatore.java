@@ -2,7 +2,6 @@
 
 import it.unibs.fp.mylib.InputDati;
 
-import java.util.ArrayList;
 
 public class Giocatore
 {

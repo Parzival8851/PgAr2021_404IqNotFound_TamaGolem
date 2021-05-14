@@ -5,21 +5,10 @@ import java.util.*;
 public class Tamagolem
 {
     private static final String CARICAPIETRE="Devi caricare le pietre nel tuo golem, verranno scagliate nell'ordine di caricamento\n";
+    private static final String SCEGLII="\nScegliere l'elemento della pietra che carico inserendo il numero tra parantesi";
 
     private Deque<Pietra> pietre;
     private int vita;
-
-
-    /**
-     * controllo che il tamagolem abbia hp
-     * @return ritorno falso se il golem è morto
-     */
-    private boolean isAlive()
-    {
-        if(vita<=0)
-            return false;
-        return true;
-    }
 
     public Tamagolem(){//costruttore
         pietre = new ArrayDeque<>();
@@ -28,6 +17,9 @@ public class Tamagolem
     }
 
 
+    /**
+     * faccio scegliere le pietre al giocatore
+     */
     public void sceltaPietre() // aggiungo le pietre scelte a una deque di pietre
     {
         System.out.println(CARICAPIETRE);// stringa: devi caricare le pietre nel tuo golem, verranno scagliate nell'ordine di caricamento
@@ -50,7 +42,7 @@ public class Tamagolem
 
 
             // stringa scegli pietra
-            int scelta=InputDati.leggiIntero("\nScegliere l'elemento della pietra che carico inserendo il numero tra parantesi", 0, Main.N-1);
+            int scelta=InputDati.leggiIntero(SCEGLII, 0, Main.N-1);
             // setto nella coda la pietra scelta, dal basso così avrò la prima pietra che sceglie in alto
             pietre.addLast(Main.getSasso(scelta));
             // tolgo una pietra dall'elenco che posso scegliere
@@ -66,7 +58,6 @@ public class Tamagolem
     /**
      * Viene selezionata la prima pietra inserita nella deque e poi viene spostata in
      * ultima posizione nel caso il tamagolem dovesse rimanere in vita
-     *
      */
     public void aggiornaPietra()
     {

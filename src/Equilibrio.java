@@ -1,47 +1,34 @@
 import it.unibs.fp.mylib.EstrazioniCasuali;
-import it.unibs.fp.mylib.InputDati;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.Collections;
-import java.util.Random;
+
 
 public class Equilibrio
 {
-    private static int[][] matrice = new int[Main.N][Main.N]; // matrice per l'equilibrio
+    private static int[][] matrice = null; // matrice per l'equilibrio
     private static int sommaR = 0; // somma della riga
     private static int sommaC = 0; // somma della colonna
-    private static boolean controllo=false;
-
-    public static void main(String[] args)
-    {
-        Equilibrio eq = new Equilibrio();
-        eq.stampaEquilibrio();
 
 
-    }
-
-
-    static boolean getControllo()
-    {
-        return controllo;
-    }
-
-    public static boolean controlloEq()
-    {
-        for (int i = 0; i < Main.N; i++)
-        {
-            aggiornaSommaR(i);
-            if(sommaR!=0) return true;
-        }
-        return false;
-    }
 
     /**
-     * calcolo l'equilibrio su una matrice antisimmetrica con diagonale nulla
+     * calculo l'equilibrio su una matrice antisimmetrica con diagonale nulla
      */
     public Equilibrio()
     {
+        // inizializzo a 0 tutte le celle
+        matrice = new int[Main.N][Main.N];
+
+        for (int i = 0; i < Main.N; i++)
+        {
+            for (int j = 0; j < Main.N; j++)
+            {
+                matrice[i][j]=0;
+            }
+        }
+
         inizializzazioneCellaV(); // sup(W)=V
 
         for (int riga = 0; riga < Main.N; riga++) // righe
@@ -66,18 +53,17 @@ public class Equilibrio
                         // a questo punto io ho la cella che possiede sia la somma orizzontale che verticale per la sua posizione
                         // calcolo i valori possibili di intersezione tra quelli possibili R\C per non sforare V, vita massima del tamagolem
 
-                        matrice[riga][colonna] = calcolaCella(riga, colonna); // calcolo cella
+                        matrice[riga][colonna] = calcolaCella(); // calcolo cella
                     }
 
                     matrice[colonna][riga] = -matrice[riga][colonna]; // set opposta
-                    sommaR += matrice[riga][colonna];
+                    sommaR += matrice[riga][colonna]; // aggiorno la somma della riga
                 }
             }
         }
 
 
 
-        controllo=controlloEq();
     }
 
 
@@ -124,15 +110,13 @@ public class Equilibrio
 
     /**
      * calcolo la cella come intersezione delle possibilità tra righe e colonne per stare dentro V nelle due somme
-     * @param riga riga su cui lavoro
-     * @param colonna colonna su cui lavoro, individuano una singola cella
-     * @return
+     * @return valore della cella da immettere in matrice
      */
-    private int calcolaCella(int riga, int colonna)
+    private int calcolaCella()
     {
 
-        ArrayList<Integer> tempR = new ArrayList<>(); // lista delle possibilità sulle righe
-        ArrayList<Integer> tempC = new ArrayList<>(); // e sulle colonne
+        ArrayList<Integer> tempR; // lista delle possibilità sulle righe
+        ArrayList<Integer> tempC; // e sulle colonne
 
         // calcolo i valori possibili per riga e colonna
         tempR = calcoloValoriPossibiliCella(sommaR); // riga
@@ -147,7 +131,7 @@ public class Equilibrio
     /**
      * calcolo i valori possibili per non sforare V data Somma
      * @param sum uso questo parametro per capire se calcolo su righe o su colonne per riutilizzare il metodo
-     * @return
+     * @return valori possibili nella cella data la somma R\C
      */
     private ArrayList<Integer> calcoloValoriPossibiliCella(int sum)
     {
@@ -213,18 +197,25 @@ public class Equilibrio
     {
         for (int i = 0; i < Main.N; i++)
         {
-            for (int j = 0; j < Main.N; j++)
+            String temp1=Integer.toString(matrice[i][0]);
+            if (temp1.length()==1) System.out.print("  "+matrice[i][0]); // 4 spazi con singola cifra (6)
+            else if(temp1.length()==2) System.out.print(" "+matrice[i][0]); // 3 spazi con doppia cifra o negativo (-6 o 10)
+            else System.out.print(matrice[i][0]); // 2 spazi con tripla cifra (-10)
+
+            for (int j = 1; j < Main.N; j++)
             {
-                System.out.print(matrice[i][j] + "  ");
+
+                String temp;
+                temp = Integer.toString(matrice[i][j]);
+
+                if (temp.length()==1) System.out.print( "    "+matrice[i][j]); // 4 spazi con singola cifra (6)
+                else if(temp.length()==2) System.out.print("   "+matrice[i][j]); // 3 spazi con doppia cifra o negativo (-6 o 10)
+                else System.out.print("  "+matrice[i][j]); // 2 spazi con tripla cifra (-10)
             }
-            aggiornaSommaR(i);
-            System.out.println("SR"+sommaR);
+            System.out.println();
+
         }
-        for (int i = 0; i < Main.N; i++)
-        {
-            aggiornaSommaC(i);
-            System.out.print("SC"+sommaC+" ");
-        }
+
     }
 
 
